@@ -745,6 +745,7 @@ a:hover {
     left: 0;
     width: 350px;
     height: 100vh;
+    box-sizing: border-box; /* Fix for scroll visibility */
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     border-right: 1px solid var(--glass-border);
