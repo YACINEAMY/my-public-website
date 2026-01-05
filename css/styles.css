@@ -766,14 +766,27 @@ a:hover {
 }
 
 /* Main Content Layout */
+/* =========================================
+   Unified Glass Variables (Shared Style)
+   ========================================= */
+
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(8px);
+}
+
+/* =========================================
+   LEFT PANEL (Static)
+   ========================================= */
+
 .left-panel {
     flex: 0 0 350px;
-    /* Fixed width for services */
-    background: var(--bg-secondary);
+    background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     padding: 20px;
     border-radius: 12px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -782,15 +795,18 @@ a:hover {
     z-index: 2;
 }
 
+/* =========================================
+   RIGHT PANEL (Floating / Retractable)
+   ========================================= */
+
 .right-panel {
     position: absolute;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.15);
-    /* Semi-transparent */
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-right: none;
     border-radius: 12px 0 0 12px;
     padding: 20px;
@@ -802,9 +818,9 @@ a:hover {
 
 .right-panel.collapsed {
     transform: translate(100%, -50%);
-    /* Pushed fully right, only button visible */
 }
 
+/* Toggle Button on Right Panel */
 .panel-toggle-btn {
     position: absolute;
     left: -20px;
@@ -824,6 +840,7 @@ a:hover {
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
+/* Right Panel Content */
 .panel-content {
     display: flex;
     flex-direction: column;
@@ -837,16 +854,15 @@ a:hover {
     gap: 15px;
 }
 
-/* Adjustments for pop-out content */
 .right-panel .footer-title {
     margin-bottom: 10px;
     text-align: center;
 }
 
-/* Remove old footer styles if unused or keep for compatibility */
+/* =========================================
+   THEME VIDEO BACKGROUND
+   ========================================= */
 
-
-/* Theme Video Background */
 .theme-video-background {
     position: fixed;
     top: 0;
@@ -855,33 +871,28 @@ a:hover {
     height: 100%;
     object-fit: cover;
     object-position: center bottom;
-    /* Anchor to bottom so header doesn't cut off key content */
     z-index: -1;
     display: block;
-    /* Always Show */
 }
 
-/* Ensure background transparency for video visibility */
 .main-content-body {
     background: none !important;
     background-color: transparent !important;
 }
 
 /* =========================================
-   Retractable Service Panel (Google Style)
+   SERVICE TOGGLE BUTTON (Waffle Menu)
    ========================================= */
 
-/* The floating toggle button (Waffle Menu) */
 .service-toggle-btn {
     position: fixed;
     top: 20px;
     left: 20px;
     z-index: 2000;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: 50%;
-    /* Circle or rounded square */
     width: 50px;
     height: 50px;
     cursor: pointer;
@@ -895,33 +906,34 @@ a:hover {
 }
 
 .service-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.35);
     transform: scale(1.1);
     box-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
-    /* Glow match */
 }
 
-/* The Panel Container */
+/* =========================================
+   LEFT PANEL DRAWER (Glass Match)
+   ========================================= */
+
 .left-panel-drawer {
     position: fixed;
     top: 0;
     left: 0;
     width: 350px;
-    /* Or wider if needed */
     height: 100vh;
-    background: rgba(30, 30, 40, 0.85);
-    /* Dark Glass */
-    backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+
+    border-right: 1px solid var(--glass-border);
+    border-radius: 0 12px 12px 0;
+
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.25);
     z-index: 1500;
-    /* Below toggle button */
-    padding: 80px 20px 20px 20px;
-    /* Top padding for toggle button space */
+
+    padding: 80px 20px 20px;
     transform: translateX(-100%);
-    /* Hidden by default */
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    /* Smooth bezel curve */
     overflow-y: auto;
 }
 
@@ -929,43 +941,41 @@ a:hover {
     transform: translateX(0);
 }
 
-/* Modify existing service list styling to fit drawer */
+/* Drawer Titles */
 .left-panel-drawer .services-title {
     color: #fff;
     text-align: center;
     margin-bottom: 30px;
-    font-family: 'Pirata One', serif;
     letter-spacing: 2px;
 }
 
+/* Service List */
 .left-panel-drawer .services-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
+/* Service Items */
 .left-panel-drawer .service-item {
-    background: rgba(255, 255, 255, 0.15);
-    /* Triple opacity */
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    /* Stronger border */
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 12px;
     padding: 15px;
-    transition: all 0.2s;
     color: #fff;
-    /* Bright white text */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    /* Added depth */
     font-weight: 500;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .left-panel-drawer .service-item:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateX(5px);
-    border-color: rgba(138, 43, 226, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
+    border-color: rgba(138, 43, 226, 0.4);
 }
 
-/* Animated Birds */
+
+/* Birds */
 .bird {
     background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg');
     background-size: auto 100%;
@@ -976,7 +986,6 @@ a:hover {
     filter: brightness(0) invert(1);
     opacity: 0.8;
 
-    /* Mirror face left + Depth Scale */
     transform: scaleX(-1) scale(var(--bird-scale));
 
     animation-name: fly-cycle;
@@ -1017,8 +1026,6 @@ a:hover {
     animation-iteration-count: infinite;
 }
 
-/* Set depth scales per bird and Longer Durations for "Random" feel */
-/* Using prime numbers to minimize synchronization */
 .bird-container-one {
     animation-duration: 45s;
     --bird-scale: 0.8;
@@ -1048,10 +1055,8 @@ a:hover {
     }
 }
 
-/* Updated Animation: Right to Left, Fast Flight (20%), Long Pause (80%) */
 @keyframes fly-left-linear {
 
-    /* Active Flight Phase (0% - 20%) */
     0% {
         transform: translateX(110vw) translateY(2vh);
     }
@@ -1076,7 +1081,6 @@ a:hover {
         transform: translateX(-10vw) translateY(0vh);
     }
 
-    /* Resting Phase (Hidden off-screen) */
     21% {
         transform: translateX(-10vw) translateY(0vh);
     }
