@@ -1,40 +1,22 @@
-/**
- * main.js
- * Consolidated JavaScript for ITE Project Website
- */
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    /* 1. Login Page Logic */
+﻿document.addEventListener('DOMContentLoaded', () => {
     if (document.body.classList.contains('login-page')) {
         setupLoginPage();
     }
-
-    /* 2. Header Logic */
     if (document.body.classList.contains('banner-body') || document.getElementById('main-music')) {
         setupHeader();
     }
-
-    /* 3. Dashboard Logic */
     if (document.body.classList.contains('main-content-body')) {
         setupDashboard();
     }
-
-    /* 4. Dead Calculator Logic */
     if (document.querySelector('.binary-wall') || document.getElementById('calc-display-broken')) {
         setupDeadCalc();
     }
-
 });
-
-/* Global Navigation Functions */
-
 window.goHome = function () {
     try {
         if (window.parent && window.parent.document) {
             const frameset = window.parent.document.querySelector('frameset');
             if (frameset) frameset.rows = "0,*";
-
             const mainFrameElement = window.parent.document.getElementsByName('main')[0];
             if (mainFrameElement) {
                 mainFrameElement.src = "pages/dashboard.html";
@@ -46,7 +28,6 @@ window.goHome = function () {
     }
     return false;
 };
-
 window.openService = function (url) {
     try {
         if (window.parent && window.parent.document) {
@@ -59,26 +40,18 @@ window.openService = function (url) {
     } catch (e) {
         console.error("Frame resize error:", e);
     }
-
     setTimeout(() => {
         window.location.href = url;
     }, 100);
 };
-
-
-/* Feature Implementations */
-
 function setupLoginPage() {
     const audio = document.getElementById('login-music');
     const playPauseBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
     const volumeSlider = document.getElementById('volume-slider');
-
     if (!audio) return;
-
     let isManuallyPaused = false;
     audio.volume = 0.4;
-
     if (playPauseBtn) {
         playPauseBtn.addEventListener('click', () => {
             if (audio.paused) {
@@ -93,14 +66,12 @@ function setupLoginPage() {
             }
         });
     }
-
     if (muteBtn) {
         muteBtn.addEventListener('click', () => {
             audio.muted = !audio.muted;
             muteBtn.textContent = audio.muted ? '🔇' : '🔊';
         });
     }
-
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             audio.volume = e.target.value;
@@ -108,11 +79,9 @@ function setupLoginPage() {
             muteBtn.textContent = '🔊';
         });
     }
-
     audio.addEventListener('play', () => { if (playPauseBtn) playPauseBtn.textContent = '❚❚'; });
     audio.addEventListener('pause', () => { if (playPauseBtn) playPauseBtn.textContent = '▶'; });
-
-    // Autoplay Policy Handler
+    
     function tryPlay() {
         if (!isManuallyPaused && audio.paused) {
             audio.play().catch(e => { });
@@ -124,17 +93,14 @@ function setupLoginPage() {
     });
     audio.addEventListener('ended', () => { if (!isManuallyPaused) audio.play(); });
 }
-
 function setupHeader() {
     const audio = document.getElementById('main-music');
     const playPauseBtn = document.getElementById('play-pause-btn');
     const muteBtn = document.getElementById('mute-btn');
     const volumeSlider = document.getElementById('volume-slider');
-
     if (!audio) return;
     let isManuallyPaused = false;
     audio.volume = 0.4;
-
     if (playPauseBtn) {
         playPauseBtn.addEventListener('click', () => {
             if (audio.paused) {
@@ -149,14 +115,12 @@ function setupHeader() {
             }
         });
     }
-
     if (muteBtn) {
         muteBtn.addEventListener('click', () => {
             audio.muted = !audio.muted;
             muteBtn.textContent = audio.muted ? '🔇' : '🔊';
         });
     }
-
     if (volumeSlider) {
         volumeSlider.addEventListener('input', (e) => {
             audio.volume = e.target.value;
@@ -164,10 +128,8 @@ function setupHeader() {
             muteBtn.textContent = '🔊';
         });
     }
-
     audio.addEventListener('play', () => { if (playPauseBtn) playPauseBtn.textContent = '❚❚'; });
     audio.addEventListener('pause', () => { if (playPauseBtn) playPauseBtn.textContent = '▶'; });
-
     function tryPlay() {
         if (!isManuallyPaused && audio.paused) {
             audio.play().catch(e => { });
@@ -177,7 +139,6 @@ function setupHeader() {
     ['click', 'keydown', 'mousemove', 'touchstart'].forEach(evt => {
         document.body.addEventListener(evt, tryPlay, { once: false });
     });
-
     audio.addEventListener('ended', () => { if (!isManuallyPaused) audio.play(); });
     setInterval(() => {
         if (!isManuallyPaused && audio.paused) {
@@ -185,18 +146,15 @@ function setupHeader() {
         }
     }, 2000);
 }
-
 function setupDashboard() {
-    // Service Drawer
+    
     const serviceToggle = document.getElementById('service-toggle');
     const serviceDrawer = document.getElementById('service-drawer');
-
     if (serviceToggle && serviceDrawer) {
         serviceToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             serviceDrawer.classList.toggle('active');
         });
-
         document.addEventListener('click', (e) => {
             if (serviceDrawer.classList.contains('active') &&
                 !serviceDrawer.contains(e.target) &&
@@ -205,12 +163,10 @@ function setupDashboard() {
             }
         });
     }
-
-    // Google Services Panel
+    
     const rightPanel = document.getElementById('right-panel');
     const toggleBtn = document.getElementById('toggle-btn');
     const toggleIcon = document.getElementById('toggle-icon');
-
     if (toggleBtn && rightPanel) {
         toggleBtn.addEventListener('click', () => {
             rightPanel.classList.toggle('collapsed');
@@ -219,38 +175,32 @@ function setupDashboard() {
             }
         });
     }
-
-    // Audio Widget Synchronization
+    
     const playPauseBtn = document.getElementById('main-play-pause-btn');
     const muteBtn = document.getElementById('main-mute-btn');
     const volumeSlider = document.getElementById('main-volume-slider');
-
     try {
         const bannerWindow = window.parent.frames['banner'];
         if (bannerWindow) {
-            // Retry mechanism in case banner loads slower than dashboard
+            
             const checkAudio = setInterval(() => {
                 const audio = bannerWindow.document.querySelector('audio');
                 if (audio && playPauseBtn) {
                     clearInterval(checkAudio);
-
-                    // Sync Initial UI
+                    
                     playPauseBtn.textContent = audio.paused ? '▶' : '❚❚';
                     if (muteBtn) muteBtn.textContent = audio.muted ? '🔇' : '🔊';
                     if (volumeSlider) volumeSlider.value = audio.volume;
-
-                    // Attach Controls
+                    
                     playPauseBtn.addEventListener('click', () => {
                         audio.paused ? audio.play() : audio.pause();
                     });
-
                     if (muteBtn) {
                         muteBtn.addEventListener('click', () => {
                             audio.muted = !audio.muted;
                             muteBtn.textContent = audio.muted ? '🔇' : '🔊';
                         });
                     }
-
                     if (volumeSlider) {
                         volumeSlider.addEventListener('input', (e) => {
                             audio.volume = e.target.value;
@@ -258,8 +208,7 @@ function setupDashboard() {
                             muteBtn.textContent = '🔊';
                         });
                     }
-
-                    // Listen for Audio Events
+                    
                     audio.addEventListener('play', () => playPauseBtn.textContent = '❚❚');
                     audio.addEventListener('pause', () => playPauseBtn.textContent = '▶');
                     audio.addEventListener('volumechange', () => {
@@ -267,16 +216,15 @@ function setupDashboard() {
                         if (muteBtn) muteBtn.textContent = audio.muted ? '🔇' : '🔊';
                     });
                 }
-            }, 500); // Check every 500ms
+            }, 500); 
 
-            // Stop checking after 5 seconds to prevent infinite loop
+            
             setTimeout(() => clearInterval(checkAudio), 5000);
         }
     } catch (e) {
         console.warn("Audio sync warning:", e);
     }
-
-    // Ensure Header is Hidden on Dashboard Load
+    
     try {
         if (window.parent && window.parent.document) {
             const frameset = window.parent.document.querySelector('frameset');
@@ -286,16 +234,14 @@ function setupDashboard() {
         }
     } catch (e) { }
 }
-
 function setupDeadCalc() {
-    // Cross-Frame Audio Control
+    
     function toggleHeaderAudio(shouldPlay) {
         try {
             const bannerWindow = window.parent.frames['banner'] || window.parent.frames[0];
             if (bannerWindow) {
                 const playPauseBtn = bannerWindow.document.getElementById('play-pause-btn');
                 const audio = bannerWindow.document.querySelector('audio');
-
                 if (audio && playPauseBtn) {
                     if (shouldPlay && audio.paused) {
                         playPauseBtn.click();
@@ -309,9 +255,8 @@ function setupDeadCalc() {
             console.warn("Audio sync error:", e);
         }
     }
-
-    toggleHeaderAudio(false); // Pause Main Audio
+    toggleHeaderAudio(false); 
     window.addEventListener('unload', () => {
-        toggleHeaderAudio(true); // Resume Main Audio
+        toggleHeaderAudio(true); 
     });
 }
